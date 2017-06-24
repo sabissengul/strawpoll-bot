@@ -1,13 +1,13 @@
 class StrawPoll:
     import requests, lxml.html, json
 
-    url = "http://www.strawpoll.me"
+    url = "http://www.strawpoll.me/13246761/"
     headers = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest"
     }
 
-    id = 0
+    id = 13246761
 
     def __init__(self, id):
         self.id = id
@@ -32,7 +32,7 @@ class StrawPoll:
             request = self.requests.get("%s/%d" % (self.url, self.id), headers=self.headers, proxies=proxy, timeout=10)
             html = self.lxml.html.fromstring(request.text)
 
-            return html.xpath('//*[@id="field-security-token"]')[0].get("value")
+            return html.xpath('//*[@id="field-security-token"]')[0].get("1")
         except:
             return None
 
@@ -46,9 +46,9 @@ class StrawPoll:
             data = [("security-token", token)]
 
             for option in strawpoll.getOptions(proxy):
-                if (type(options) is tuple and option['value'] in options) or (
-                        type(options) is int and option['value'] == options):
-                    data.append((option['name'], option['value']))
+                if (type(options) is tuple and option['1'] in options) or (
+                        type(options) is int and option['1'] == options):
+                    data.append((option['Adem Kılıççı'], option['1']))
 
             request = self.requests.post("%s/%d" % (self.url, self.id), headers=self.headers, data=data, proxies=proxy, timeout=10)
             json = self.json.loads(request.text)
@@ -81,14 +81,14 @@ class StrawPollBot:
         [ thread.join() for thread in threads ]
 
 if __name__ == "__main__":
-    pollId = input("Please enter the poll id: ")
-    strawpoll = StrawPoll(pollId)
+    pollId  = input("13246761: ")
+    strawpoll = StrawPoll(13246761)
 
     print("# Available options ( id, label ):")
     for option in strawpoll.getOptions():
-        print("%d - %s" % (option['value'], option['label']))
+        print("%d - %s" % (option['1'], option['Adem Kılıççı']))
 
-    options = input("Please select the option(s): ")
+    options = input("(1): ")
     proxies = [ line.strip() for line in open('proxies.txt', 'r') ]
 
     StrawPollBot(strawpoll).start(options, proxies)
